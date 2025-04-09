@@ -99,16 +99,22 @@
                     <div class="rating-label">Please Rate Your Experience:</div>
                     <div class="star-rating">
                         <input type="radio" id="star1" name="rating" value="1">
-                        <label for="star1">★</label>
+                        <label for="star1" data-value="1">★</label>
+                      
                         <input type="radio" id="star2" name="rating" value="2">
-                        <label for="star2">★</label>
+                        <label for="star2" data-value="2">★</label>
+                      
                         <input type="radio" id="star3" name="rating" value="3">
-                        <label for="star3">★</label>
+                        <label for="star3" data-value="3">★</label>
+                      
                         <input type="radio" id="star4" name="rating" value="4">
-                        <label for="star4">★</label>
-                        <input type="radio" id="star5" name="rating" value="5" checked>
-                        <label for="star5">★</label>
-                    </div>
+                        <label for="star4" data-value="4">★</label>
+                      
+                        <input type="radio" id="star5" name="rating" value="5">
+                        <label for="star5" data-value="5">★</label>
+                      </div>
+                      <div class="rating-text" id="ratingMessage">LOVED IT</div>
+                      
                     <div class="rating-text">LOVED IT</div>
                 </div>
                 
@@ -190,5 +196,52 @@
             </div>
         </div>
     </div>
+    <script>
+        const labels = document.querySelectorAll('.star-rating label');
+        const ratingText = document.getElementById('ratingMessage');
+      
+        const messages = [
+          "DESPISED IT",
+          "DISLIKED IT",
+          "IT'S OKAY",
+          "LIKED IT",
+          "LOVED IT"
+        ];
+      
+        labels.forEach(label => {
+          const value = parseInt(label.getAttribute('data-value'));
+      
+          label.addEventListener('mouseover', () => {
+            ratingText.textContent = messages[value - 1];
+            highlightStars(value);
+          });
+      
+          label.addEventListener('click', () => {
+            ratingText.textContent = messages[value - 1];
+          });
+      
+          label.addEventListener('mouseout', () => {
+            const checked = document.querySelector('.star-rating input:checked');
+            const currentVal = checked ? parseInt(checked.value) : 5;
+            ratingText.textContent = messages[currentVal - 1];
+            highlightStars(currentVal);
+          });
+        });
+      
+        function highlightStars(value) {
+          labels.forEach(label => {
+            const starVal = parseInt(label.getAttribute('data-value'));
+            label.style.color = starVal <= value ? '#ffc107' : '#ccc';
+          });
+        }
+      
+        // Initial highlight based on checked radio
+        document.addEventListener('DOMContentLoaded', () => {
+          const checked = document.querySelector('.star-rating input:checked');
+          const value = checked ? parseInt(checked.value) : 5;
+          highlightStars(value);
+        });
+      </script>
+      
 </body>
 </html>
